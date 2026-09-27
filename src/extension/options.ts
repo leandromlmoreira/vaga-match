@@ -22,7 +22,10 @@ function setStatus(message: string, tone: "ok" | "aviso" | "neutro" = "neutro"):
 }
 
 function refreshButtons(current: string): void {
-  if (saveButton) saveButton.disabled = current.trim().length === 0 || current === savedText;
+  if (saveButton) {
+    saveButton.disabled = current.trim().length === 0 || current === savedText;
+    saveButton.textContent = current === savedText && savedText.length > 0 ? "Salvo" : "Salvar currículo";
+  }
   if (deleteButton) deleteButton.hidden = savedText.length === 0;
 }
 

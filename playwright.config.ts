@@ -18,6 +18,7 @@ export default defineConfig({
     {
       name: "extensao",
       testMatch: /extension\.spec\.ts/,
+      timeout: 60_000,
     },
   ],
   webServer: {

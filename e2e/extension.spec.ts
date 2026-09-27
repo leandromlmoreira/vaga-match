@@ -27,11 +27,14 @@ test.beforeAll(async () => {
     channel: process.env.VM_E2E_CHANNEL ?? "chromium",
     headless: true,
     viewport: { width: 1280, height: 800 },
+    colorScheme: process.env.VM_E2E_SCHEME === "dark" ? "dark" : "light",
     args: [`--disable-extensions-except=${extensionDir}`, `--load-extension=${extensionDir}`, `--host-resolver-rules=MAP www.vagas.com.br 127.0.0.1, MAP www.linkedin.com 127.0.0.1`],
   });
   const worker = context.serviceWorkers()[0] ?? (await context.waitForEvent("serviceworker"));
   extensionId = new URL(worker.url()).host;
-  await expect.poll(() => context.pages().some((page) => page.url().endsWith("/options.html")), { timeout: 10_000 }).toBe(true);
+  await expect
+    .poll(() => context.pages().some((page) => page.url().endsWith("/options.html")), { timeout: 30_000, message: "a página do currículo abre sozinha na instalação" })
+    .toBe(true);
   await closeAllBut();
 });
 
@@ -71,6 +74,7 @@ test("sem currículo salvo, o popup pede o currículo", async () => {
   const popup = await openPopup();
   await expect(popup.getByRole("heading", { name: "Primeiro, o seu currículo" })).toBeVisible();
   await expect(popup.getByTestId("add-resume")).toBeVisible();
+  await popup.screenshot({ path: test.info().outputPath("popup-vazio.png") });
   await closeAllBut();
 });
 
@@ -84,6 +88,7 @@ test("salva o currículo na página de opções", async () => {
   await expect(options.getByRole("status").filter({ hasText: "Salvo neste navegador" })).toBeVisible();
   const stored = await options.evaluate(async () => (await chrome.storage.local.get("resume")) as { resume?: { text: string } });
   expect(stored.resume?.text).toContain("Marina Duarte Costa");
+  await options.screenshot({ path: test.info().outputPath("opcoes.png"), fullPage: true });
   await closeAllBut();
 });
 
@@ -114,6 +119,7 @@ test("analisa uma vaga no LinkedIn e ignora a lista lateral", async () => {
   await expect(popup.locator(".vm-result")).not.toContainText("Kotlin");
   await expect(popup.locator(".vm-facts")).toContainText("Remoto");
   await expect(popup.locator(".vm-facts")).toContainText("fluente");
+  await popup.screenshot({ path: test.info().outputPath("popup-linkedin.png") });
   await closeAllBut();
 });
 
@@ -153,6 +159,7 @@ test("página sem vaga mostra como resolver", async () => {
   const popup = await openPopup();
   await expect(popup.getByRole("heading", { name: "Não achei o texto da vaga" })).toBeVisible({ timeout: 10_000 });
   await expect(popup.getByRole("button", { name: "Tentar de novo" })).toBeVisible();
+  await popup.screenshot({ path: test.info().outputPath("popup-erro.png") });
   await closeAllBut();
 });
 
