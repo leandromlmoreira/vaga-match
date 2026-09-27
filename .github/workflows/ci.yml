@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Lint e tipos
+        run: npm run lint
+      - name: Testes do motor
+        run: npm test
+      - name: Build do site e da extensão
+        run: npm run build
+      - name: Instalar Chromium do Playwright
+        run: npx playwright install --with-deps chromium
+      - name: Testes end-to-end (site e extensão)
+        run: npm run test:e2e
+      - name: Empacotar extensão
+        run: npm run zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vaga-match-extensao
+          path: vaga-match.zip
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: test-results

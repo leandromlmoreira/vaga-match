@@ -1,0 +1,69 @@
+name: Publicar site e versão
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: publicar
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - run: npm run zip
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/site
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vaga-match-zip
+          path: vaga-match.zip
+
+  pages:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: vaga-match-zip
+      - name: Criar a versão do package.json, se ainda não existir
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="v$(node -p "require('./package.json').version")"
+          if gh release view "$VERSION" >/dev/null 2>&1; then
+            echo "A versão $VERSION já existe. Nada a fazer."
+          else
+            gh release create "$VERSION" vaga-match.zip \
+              --title "Vaga Match $VERSION" \
+              --notes "Extensão empacotada pelo workflow. Baixe vaga-match.zip, extraia e carregue a pasta em chrome://extensions com o Modo do desenvolvedor ligado."
+          fi

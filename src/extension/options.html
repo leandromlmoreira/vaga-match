@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vaga Match · Meu currículo</title>
+  </head>
+  <body class="op">
+    <div class="op-wrap">
+      <header class="op-top">
+        <p class="op-brand"><span>Vaga</span> <span class="op-brand__mark">Match</span></p>
+      </header>
+      <main class="op-main">
+        <h1 class="op-title">Seu currículo fica aqui, e só aqui.</h1>
+        <p class="op-lede">Envie o PDF ou cole o texto uma vez. A extensão guarda uma cópia no armazenamento local deste navegador e usa só para comparar com a vaga que você estiver vendo. Nada é enviado para servidor nenhum.</p>
+        <div id="form"></div>
+        <div class="op-actions">
+          <button type="button" class="vm-button" id="save" data-testid="save-resume">Salvar currículo</button>
+          <p class="op-status" id="status" role="status"></p>
+          <button type="button" class="vm-button" data-variant="ghost" id="delete" data-testid="delete-resume">Apagar currículo</button>
+        </div>
+        <section class="op-how" aria-labelledby="how-title">
+          <h2 class="op-how__title" id="how-title">Depois de salvar</h2>
+          <ol class="op-how__list">
+            <li><strong>Abra uma vaga</strong> no LinkedIn Vagas, Gupy, Indeed ou Vagas.com.</li>
+            <li><strong>Clique no ícone</strong> do Vaga Match na barra do Chrome. A nota aparece na hora.</li>
+            <li><strong>Em outros sites</strong>, selecione o texto da vaga com o mouse antes de clicar.</li>
+          </ol>
+        </section>
+      </main>
+    </div>
+    <script type="module" src="./options.ts"></script>
+  </body>
+</html>

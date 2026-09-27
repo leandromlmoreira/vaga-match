@@ -13,7 +13,7 @@
     "zip": "node scripts/zip-extension.mjs",
     "preview": "vite preview --config vite.site.config.ts",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint . && tsc --noEmit",
+    "lint": "eslint src tests e2e scripts playwright.config.ts vite.ext.config.ts vite.site.config.ts vitest.config.ts eslint.config.js && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test"
