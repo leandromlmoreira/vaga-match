@@ -1,0 +1,209 @@
+@import "@fontsource-variable/fraunces/opsz.css";
+@import "@fontsource-variable/geist/wght.css";
+
+:root {
+  color-scheme: light dark;
+  --font-display: "Fraunces Variable", "Iowan Old Style", Georgia, serif;
+  --font-ui: "Geist Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --paper: #f4efe4;
+  --paper-raised: #fbf8f1;
+  --paper-sunk: #e9e2d3;
+  --ink: #1d1a15;
+  --ink-2: #4b463d;
+  --ink-3: #676052;
+  --rule: #d6cdbb;
+  --rule-strong: #b3a891;
+  --marker: #c9ef6b;
+  --marker-mark: #d9f59a;
+  --marker-ink: #1d3405;
+  --miss: #b3311b;
+  --miss-soft: #f5dbd2;
+  --infer: #52701a;
+  --focus: #2946cf;
+  --band-forte: #c9ef6b;
+  --band-boa: #dff2a8;
+  --band-parcial: #f6e19a;
+  --band-baixa: #f5cfc3;
+  --shadow-panel: 0 1px 1px rgb(45 33 12 / 0.05), 0 18px 40px -18px rgb(45 33 12 / 0.28), 0 2px 8px -2px rgb(45 33 12 / 0.08);
+  --shadow-sheet: 0 1px 1px rgb(45 33 12 / 0.04), 0 22px 50px -30px rgb(45 33 12 / 0.3);
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --radius: 14px;
+  --radius-sm: 8px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #13120f;
+    --paper-raised: #1c1a16;
+    --paper-sunk: #0d0c0a;
+    --ink: #f1ece2;
+    --ink-2: #c7bfb0;
+    --ink-3: #a39b8b;
+    --rule: #34302a;
+    --rule-strong: #514b41;
+    --marker: #c9ef6b;
+    --marker-mark: rgb(201 239 107 / 0.24);
+    --marker-ink: #13220a;
+    --miss: #ff8d70;
+    --miss-soft: rgb(255 141 112 / 0.14);
+    --infer: #b9dc6e;
+    --focus: #93a6ff;
+    --band-forte: rgb(201 239 107 / 0.3);
+    --band-boa: rgb(201 239 107 / 0.18);
+    --band-parcial: rgb(246 214 110 / 0.22);
+    --band-baixa: rgb(255 141 112 / 0.2);
+    --shadow-panel: 0 1px 1px rgb(0 0 0 / 0.4), 0 22px 48px -20px rgb(0 0 0 / 0.7);
+    --shadow-sheet: 0 1px 1px rgb(0 0 0 / 0.3), 0 22px 50px -30px rgb(0 0 0 / 0.6);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.5;
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--marker);
+  color: var(--marker-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+.vm-visually-hidden,
+.vm-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.icon {
+  flex: none;
+}
+
+.vm-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper-raised);
+  font-weight: 560;
+  font-size: 14px;
+  letter-spacing: -0.005em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out), background-color 160ms var(--ease-out), box-shadow 200ms var(--ease-out);
+}
+
+.vm-button:hover {
+  box-shadow: 0 0 0 4px var(--marker-mark);
+}
+
+.vm-button:active {
+  transform: scale(0.97);
+}
+
+.vm-button[data-variant="ghost"] {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--rule-strong);
+}
+
+.vm-button[data-variant="ghost"]:hover {
+  background: var(--paper-raised);
+  box-shadow: none;
+  border-color: var(--ink-3);
+}
+
+.vm-button[data-variant="marker"] {
+  background: var(--marker);
+  color: var(--marker-ink);
+  border-color: var(--marker);
+}
+
+.vm-button[data-variant="marker"]:hover {
+  box-shadow: 0 0 0 4px var(--marker-mark);
+}
+
+.vm-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--rule);
+  border: 3px solid var(--paper);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--rule-strong);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
